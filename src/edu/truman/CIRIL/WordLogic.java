@@ -1,12 +1,12 @@
 package edu.truman.CIRIL;
 
+import java.io.File;
 import java.util.ArrayList;
-import java.util.Dictionary;
+import java.util.HashMap;
+//import java.util.Dictionary;
 import java.util.Scanner;
 
 import edu.truman.CIRIL.Word.WordType;
-
-import java.io.File;
 
 public class WordLogic
 {
@@ -14,6 +14,7 @@ public class WordLogic
 	ArrayList<Word> wordList;//output
 	
 	Scanner prefixes, suffixes;
+	HashMap<String, String> prefixMap, suffixMap;
 	BaseDictionary dict;
 	
 	String tempPrefix, tempSuffix;
@@ -24,23 +25,37 @@ public class WordLogic
 	public WordLogic(String originalWord)
 	{
 		this.originalWord = originalWord;
+		this.baseWord = this.originalWord;
 	}
 	
+	private void buildHashMap(Scanner scanner, HashMap<String, String> hash) {
+		while(scanner.hasNextLine()) {
+			String line = scanner.nextLine();
+			String word[] = line.split("\\s+", 2);
+			hash.put(word[0], word[1]);
+		}
+	}
 	
 	public void openEverything()
 	{
+		prefixMap = new HashMap<String, String>();
+		suffixMap = new HashMap<String, String>();
+		wordList = new ArrayList<Word>();
 		try
 		{
-			File prefixFile = new File("CIRIL/CIRILprefixes.txt");
+			File prefixFile = new File("CIRILprefixes.txt");
 			prefixes = new Scanner(prefixFile);
-			File suffixFile = new File("CIRIL/CIRILsuffixes.txt");
+			buildHashMap(prefixes, prefixMap);
+			File suffixFile = new File("CIRILsuffixes.txt");
 			suffixes = new Scanner(suffixFile);
+			buildHashMap(suffixes, suffixMap);
 			dict = new BaseDictionary(new File("CIRILDictionary.txt"));
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
 		}
+		
 	}
 	
 	public void closeEverything()
@@ -57,14 +72,14 @@ public class WordLogic
 	}
 	private boolean findPrefixes()
 	{
-		count = 0;
+		count = baseWord.length();
 		prefixFlag = false;
-		while(prefixes.hasNext())//traversing the file
+		while(count >= 0)//traversing the file
 		{
 			tempPrefix = baseWord.substring(0, count);
-			if(tempPrefix.equals(prefixes.next()))
+			if(prefixMap.containsKey(tempPrefix))
 			{
-				Word newWord = new Word(tempPrefix, WordType.PREFIX, prefixes.nextLine());
+				Word newWord = new Word(tempPrefix, WordType.PREFIX, prefixMap.get(tempPrefix));
 				wordList.add(newWord);
 				baseWord = baseWord.substring(count, baseWord.length());
 				prefixFlag = true;
@@ -72,8 +87,7 @@ public class WordLogic
 			}
 			else
 			{
-				prefixes.nextLine();
-				count++;
+				count--;
 			}
 		}
 		return prefixFlag;
@@ -81,14 +95,14 @@ public class WordLogic
 	
 	private boolean findSuffixes()
 	{
-		count = baseWord.length()-1;
+		count = 0;
 		suffixFlag = false;
-		while(suffixes.hasNext())//traversing the file
+		while(count <= baseWord.length())//traversing the file
 		{
-			tempSuffix = baseWord.substring(count, baseWord.length()-1);
-			if(tempSuffix.equals(suffixes.next()))
+			tempSuffix = baseWord.substring(count, baseWord.length());
+			if(suffixMap.containsKey(tempSuffix))
 			{
-				Word newWord = new Word(tempSuffix, WordType.SUFFIX, suffixes.nextLine());
+				Word newWord = new Word(tempSuffix, WordType.SUFFIX, suffixMap.get(tempSuffix));
 				wordList.add(newWord);
 				baseWord = baseWord.substring(0, count);
 				suffixFlag = true;
@@ -96,8 +110,7 @@ public class WordLogic
 			}
 			else
 			{
-				suffixes.nextLine();
-				count--;
+				count++;
 			}
 		}
 		return suffixFlag;
@@ -105,7 +118,7 @@ public class WordLogic
 	
 	private void checkWord()
 	{
-		if(!(dict.isWord(baseWord)))
+		if(!(dict.isWord(baseWord)) && wordList.size() > 0)
 		{
 			Word lastItem = wordList.get(wordList.size()-1);
 			if(lastItem.getWordType() == WordType.PREFIX)
@@ -126,11 +139,12 @@ public class WordLogic
 	{
 		openEverything();
 		while(findPrefixes());
-		checkWord();
 		while(findSuffixes());
 		checkWord();
+		System.out.println(baseWord);
+		System.out.println(originalWord);
 		wordList.add(dict.define(new Word(baseWord, WordType.BASE)));
-		wordList.add(dict.define(new Word(originalWord, WordType.ORG)));
+		//wordList.add(dict.define(new Word(originalWord, WordType.ORG)));
 		closeEverything();
 		return wordList;
 		

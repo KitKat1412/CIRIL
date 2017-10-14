@@ -13,6 +13,9 @@ public class OxfordToCIRIL {
 				String line = oxfordDictScanner.nextLine();
 				String[] word = line.split("\\s+", 3);
 				if(word.length >= 3 && word[0].indexOf("-") == -1 && word[1].indexOf(".") != -1) {
+					if(word[0].indexOf("1") != -1) {
+						word[0] = word[0].replace("1", "");
+					}
 					word[0] = word[0].toLowerCase();
 					System.out.println(String.join(" ", word));
 				}

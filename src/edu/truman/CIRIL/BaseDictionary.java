@@ -18,7 +18,9 @@ final public class BaseDictionary {
 		while(dictScanner.hasNextLine()) {
 			String line = dictScanner.nextLine();
 			String word[] = line.split("\\s+", 2);
-			definitionMap.put(word[0], word[1]);
+			if(word[0].length() > 1) {
+				definitionMap.put(word[0], word[1]);
+			}
 		}
 	}
 	
