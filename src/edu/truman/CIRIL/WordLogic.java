@@ -129,7 +129,6 @@ public class WordLogic
 				
 				if(isVowel(tempS.charAt(0)))		//Fixes words where e is truncated when suffix is added eg. spacious => space
 				{
-					System.err.println("first if");
 					if((baseWord.charAt(baseWord.length()-1) != 'e') && (baseWord.charAt(baseWord.length()-1) != 'o') && (baseWord.charAt(baseWord.length()-1) != 'y'))
 					{
 						tempB = baseWord + 'e';
@@ -141,19 +140,16 @@ public class WordLogic
 				}
 				if(baseWord.charAt(baseWord.length()-1) == 'i') //where y is changed to i when suffix is added eg. bountiful => bounty
 				{
-					System.err.println("second if");
 					tempB = baseWord.substring(0, baseWord.length()-1) + 'y';
 				}
 				if(baseWord.charAt(baseWord.length()-1) == 'y')  //where ie is changed to y when suffix is added eg. lying => lie
 				{
-					System.err.println("third if");
 					tempB = baseWord.substring(0, baseWord.length()-1) + "ie";	
 				}
 				if(baseWord.length() > 1)  //to prevent exceptions occuring when baseWord is only one letter
 				{
 						if(!isVowel(baseWord.charAt(baseWord.length()-1)) && (baseWord.charAt(baseWord.length()-1) == baseWord.charAt(baseWord.length()-2)))
 					{															//Fixes words where an extra consonant is added before suffix eg. run => running
-						System.err.println("fourth if");
 						tempB = baseWord.substring(0, baseWord.length()-1);
 					}
 				}
@@ -177,7 +173,8 @@ public class WordLogic
 	}
 	
 	private void checkWord()
-	{
+	{	
+		//fixWord();
 		if(!(dict.isWord(baseWord)) && wordList.size() > 0)
 		{
 			Word lastItem = wordList.get(wordList.size()-1);
@@ -201,11 +198,9 @@ public class WordLogic
 		openEverything();
 		while(findPrefixes());
 		while(findSuffixes());
-		//checkWord();
-		fixWord();
+		if (!(baseWord.length() == 0))
+			fixWord();
 		checkWord();
-		System.out.println(baseWord);
-		System.out.println(originalWord);
 		wordList.add(dict.define(new Word(baseWord, WordType.BASE)));
 		wordList.add(dict.define(new Word(originalWord, WordType.ORG)));
 		closeEverything();
