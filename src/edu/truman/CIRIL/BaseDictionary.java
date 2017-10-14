@@ -31,6 +31,15 @@ final public class BaseDictionary {
 	}
 	
 	/**
+	 * @param word Word string
+	 * @return true if word
+	 */
+	public boolean isWord(String wordString) {
+		return definitionMap.containsKey(wordString.toLowerCase());
+	}
+	
+	
+	/**
 	 * @param word Word
 	 * @return word with definition
 	 */
