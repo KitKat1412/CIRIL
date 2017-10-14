@@ -3,7 +3,7 @@ public class Word
 {
 	final private String word;
 	final private String definition;
-	public enum WordType {PREFIX, SUFFIX, BASE};
+	public enum WordType {PREFIX, SUFFIX, BASE, ORG};
 	final private WordType type;
 	
 	public Word(String word, WordType type, String definition)
@@ -30,8 +30,21 @@ public class Word
 		return definition;
 	}
 	
-	public WordType getwordType()
+	public WordType getWordType()
 	{
 		return type;
+	}
+	
+	public Word setWord(String word)
+	{
+		return new Word(word, type, definition);
+	}
+	
+	public Word setDefinition(String definition) {
+		return new Word(word, type, definition);
+	}
+	
+	public Word setWordType(WordType type) {
+		return new Word(word, type, definition);
 	}
 }
