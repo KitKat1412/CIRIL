@@ -118,38 +118,42 @@ public class WordLogic
 	
 	private void fixWord()
 	{
-		Word tempWordSuffix = wordList.get(wordList.size()-1);
-		if(tempWordSuffix.getWordType() == WordType.SUFFIX)
+		Word tempWordSuffix;
+		if(!wordList.isEmpty())
 		{
-			String tempS = tempWordSuffix.getWord();
-			String tempB = "";
-			
-			if(isVowel(tempS.charAt(0)))		//Fixes words where e is truncated before suffix
+			tempWordSuffix = wordList.get(wordList.size()-1);
+			if(tempWordSuffix.getWordType() == WordType.SUFFIX)
 			{
-				System.err.println((baseWord.charAt(baseWord.length()-1)));
-				if((baseWord.charAt(baseWord.length()-1) != 'e') && (baseWord.charAt(baseWord.length()-1) != 'o'))
+				String tempS = tempWordSuffix.getWord();
+				String tempB = "";
+				
+				if(isVowel(tempS.charAt(0)))		//Fixes words where e is truncated before suffix
 				{
-					tempB = baseWord + 'e';
+					System.err.println((baseWord.charAt(baseWord.length()-1)));
+					if((baseWord.charAt(baseWord.length()-1) != 'e') && (baseWord.charAt(baseWord.length()-1) != 'o'))
+					{
+						tempB = baseWord + 'e';
+					}
 				}
-			}
-			if(baseWord.charAt(baseWord.length()-1) == 'i')
-			{
-				tempB = baseWord.substring(0, baseWord.length()-1) + 'y';
-			}
-			System.err.println(baseWord.charAt(baseWord.length()-1));
-			System.err.println(baseWord);
-			if(baseWord.charAt(baseWord.length()-1) == 'y')
-			{
-				tempB = baseWord.substring(0, baseWord.length()-1) + "ie";	
-			}
-			if(isVowel(baseWord.charAt(baseWord.length()-1)) && (baseWord.charAt(baseWord.length()-1) == baseWord.charAt(baseWord.length()-2)))
-			{
-				tempB = baseWord.substring(0, baseWord.length()-1);
-			}
-			if(dict.isWord(tempB))
-			{
-				baseWord = tempB;
-			}
+				if(baseWord.charAt(baseWord.length()-1) == 'i')
+				{
+					tempB = baseWord.substring(0, baseWord.length()-1) + 'y';
+				}
+				System.err.println(baseWord.charAt(baseWord.length()-1));
+				System.err.println(baseWord);
+				if(baseWord.charAt(baseWord.length()-1) == 'y')
+				{
+					tempB = baseWord.substring(0, baseWord.length()-1) + "ie";	
+				}
+				if(isVowel(baseWord.charAt(baseWord.length()-1)) && (baseWord.charAt(baseWord.length()-1) == baseWord.charAt(baseWord.length()-2)))
+				{
+					tempB = baseWord.substring(0, baseWord.length()-1);
+				}
+				if(dict.isWord(tempB))
+				{
+					baseWord = tempB;
+				}
+			}	
 		}
 	}
 	
@@ -188,13 +192,12 @@ public class WordLogic
 		openEverything();
 		while(findPrefixes());
 		while(findSuffixes());
-		//fixWord();
 		checkWord();
 		fixWord();
 		System.out.println(baseWord);
 		System.out.println(originalWord);
 		wordList.add(dict.define(new Word(baseWord, WordType.BASE)));
-		//wordList.add(dict.define(new Word(originalWord, WordType.ORG)));
+		wordList.add(dict.define(new Word(originalWord, WordType.ORG)));
 		closeEverything();
 		return wordList;
 		
