@@ -127,24 +127,35 @@ public class WordLogic
 				String tempS = tempWordSuffix.getWord();
 				String tempB = "";
 				
-				if(isVowel(tempS.charAt(0)))		//Fixes words where e is truncated before suffix
+				if(isVowel(tempS.charAt(0)))		//Fixes words where e is truncated when suffix is added eg. spacious => space
 				{
-					if((baseWord.charAt(baseWord.length()-1) != 'e') && (baseWord.charAt(baseWord.length()-1) != 'o'))
+					System.err.println("first if");
+					if((baseWord.charAt(baseWord.length()-1) != 'e') && (baseWord.charAt(baseWord.length()-1) != 'o') && (baseWord.charAt(baseWord.length()-1) != 'y'))
 					{
 						tempB = baseWord + 'e';
+						if(dict.isWord(tempB))
+						{
+							baseWord = tempB;
+						}
 					}
 				}
-				if(baseWord.charAt(baseWord.length()-1) == 'i')
+				if(baseWord.charAt(baseWord.length()-1) == 'i') //where y is changed to i when suffix is added eg. bountiful => bounty
 				{
+					System.err.println("second if");
 					tempB = baseWord.substring(0, baseWord.length()-1) + 'y';
 				}
-				if(baseWord.charAt(baseWord.length()-1) == 'y')
+				if(baseWord.charAt(baseWord.length()-1) == 'y')  //where ie is changed to y when suffix is added eg. lying => lie
 				{
+					System.err.println("third if");
 					tempB = baseWord.substring(0, baseWord.length()-1) + "ie";	
 				}
-				if(isVowel(baseWord.charAt(baseWord.length()-1)) && (baseWord.charAt(baseWord.length()-1) == baseWord.charAt(baseWord.length()-2)))
+				if(baseWord.length() > 1)  //to prevent exceptions occuring when baseWord is only one letter
 				{
-					tempB = baseWord.substring(0, baseWord.length()-1);
+						if(!isVowel(baseWord.charAt(baseWord.length()-1)) && (baseWord.charAt(baseWord.length()-1) == baseWord.charAt(baseWord.length()-2)))
+					{															//Fixes words where an extra consonant is added before suffix eg. run => running
+						System.err.println("fourth if");
+						tempB = baseWord.substring(0, baseWord.length()-1);
+					}
 				}
 				if(dict.isWord(tempB))
 				{
@@ -180,17 +191,19 @@ public class WordLogic
 			{
 				baseWord = baseWord + lastItem.getWord();
 				wordList.remove(wordList.size()-1);
+				fixWord();
 				checkWord();
 			}
-		}
+		} 
 	}
 	public ArrayList<Word> assembleWordList()
 	{
 		openEverything();
 		while(findPrefixes());
 		while(findSuffixes());
-		checkWord();
+		//checkWord();
 		fixWord();
+		checkWord();
 		System.out.println(baseWord);
 		System.out.println(originalWord);
 		wordList.add(dict.define(new Word(baseWord, WordType.BASE)));
