@@ -6,14 +6,14 @@ public class Word
 	public enum WordType {PREFIX, SUFFIX, BASE};
 	final private WordType type;
 	
-	Word(String word, WordType type, String definition)
+	public Word(String word, WordType type, String definition)
 	{
 		this.word = word;
 		this.type = type;
 		this.definition = definition;
 	}
 	
-	Word(String word, WordType type)
+	public Word(String word, WordType type)
 	{
 		this.word = word;
 		this.type = type;
