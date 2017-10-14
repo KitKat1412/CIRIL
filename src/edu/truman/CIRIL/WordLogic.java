@@ -124,6 +124,7 @@ public class WordLogic
 	}
 	public ArrayList<Word> assembleWordList()
 	{
+		openEverything();
 		while(findPrefixes());
 		checkWord();
 		while(findSuffixes());
