@@ -1,0 +1,23 @@
+anti	against
+de	opposite
+dis	not, opposite of
+en	cause to
+em	cause to
+fore	before
+in	in or not
+im	in or not
+il	not
+ir	not
+inter	between
+mid	middle
+mis	wrongly
+non	not
+over	over
+pre	before
+re	again
+semi	half
+sub	under
+super	above
+trans	across
+un	not
+under	under
