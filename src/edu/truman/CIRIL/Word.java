@@ -1,9 +1,9 @@
-
+package edu.truman.CIRIL;
 public class Word
 {
 	final private String word;
 	final private String definition;
-	final public enum WordType {PREFIX, SUFFIX, BASE};
+	public enum WordType {PREFIX, SUFFIX, BASE};
 	final private WordType type;
 	
 	Word(String word, WordType type, String definition)
@@ -17,6 +17,7 @@ public class Word
 	{
 		this.word = word;
 		this.type = type;
+		this.definition = null;
 	}
 	
 	public String getWord()
