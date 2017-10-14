@@ -129,7 +129,6 @@ public class WordLogic
 				
 				if(isVowel(tempS.charAt(0)))		//Fixes words where e is truncated before suffix
 				{
-					System.err.println((baseWord.charAt(baseWord.length()-1)));
 					if((baseWord.charAt(baseWord.length()-1) != 'e') && (baseWord.charAt(baseWord.length()-1) != 'o'))
 					{
 						tempB = baseWord + 'e';
@@ -139,8 +138,6 @@ public class WordLogic
 				{
 					tempB = baseWord.substring(0, baseWord.length()-1) + 'y';
 				}
-				System.err.println(baseWord.charAt(baseWord.length()-1));
-				System.err.println(baseWord);
 				if(baseWord.charAt(baseWord.length()-1) == 'y')
 				{
 					tempB = baseWord.substring(0, baseWord.length()-1) + "ie";	
