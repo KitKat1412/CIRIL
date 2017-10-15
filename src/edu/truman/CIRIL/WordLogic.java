@@ -3,7 +3,6 @@ package edu.truman.CIRIL;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
-//import java.util.Dictionary;
 import java.util.Scanner;
 
 import edu.truman.CIRIL.Word.WordType;
@@ -24,7 +23,14 @@ public class WordLogic
 	
 	public WordLogic(String originalWord)
 	{
-		this.originalWord = originalWord;
+		int length;
+		for(length = 0; length < originalWord.length(); length++)
+		{
+			char current = originalWord.charAt(length);
+			if((current == ' ') || (current == '\t') || (current == '\n'))
+				break;
+		}
+		this.originalWord = originalWord.substring(0, length);
 		this.baseWord = this.originalWord;
 	}
 	
